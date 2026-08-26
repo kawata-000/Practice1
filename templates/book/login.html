@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<style>
+    .page-container {
+        width: min(90%, 520px);
+        margin: 60px auto;
+    }
+
+    .form-card {
+        padding: 32px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .form-group input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    .error-message {
+        color: #b00020;
+        margin-top: 6px;
+    }
+
+    .login-button {
+        width: 100%;
+        padding: 12px;
+        cursor: pointer;
+    }
+
+    .register-user {
+        margin-top: 20px;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h1>ログイン画面</h1>
+
+    <div class="form-card">
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="error-message">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">ユーザー名</label>
+                {{ form.username }}
+                {% for error in form.username.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password.id_for_label }}">パスワード</label>
+                {{ form.password }}
+                {% for error in form.password.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <button class="login-button" type="submit">ログイン</button>
+        </form>
+
+        <div class="register-user">
+            <!-- urls.py の name="newRegister" を逆引き -->
+            <a href="{% url 'book:userRegisterView' %}">新規ユーザー登録</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

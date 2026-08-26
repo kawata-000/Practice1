@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<style>
+    .page-container {
+        width: min(90%, 560px);
+        margin: 60px auto;
+    }
+
+    .form-card {
+        padding: 32px;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .form-group input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    .error-message {
+        color: #b00020;
+        margin-top: 6px;
+    }
+
+    .register-button {
+        width: 100%;
+        padding: 12px;
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h1>ユーザー登録画面</h1>
+
+    <div class="form-card">
+        <form method="POST">
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="error-message">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+
+            <div class="form-group">
+                <label for="{{ form.username.id_for_label }}">ユーザー名</label>
+                {{ form.username }}
+                {% for error in form.username.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">メールアドレス</label>
+                {{ form.email }}
+                {% for error in form.email.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password1.id_for_label }}">パスワード</label>
+                {{ form.password1 }}
+                {% for error in form.password1.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.password2.id_for_label }}">パスワード確認</label>
+                {{ form.password2 }}
+                {% for error in form.password2.errors %}
+                    <div class="error-message">{{ error }}</div>
+                {% endfor %}
+            </div>
+
+            <button class="register-button" type="submit">登録</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

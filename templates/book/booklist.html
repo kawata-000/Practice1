@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block css %}
+<style>
+    .page-container {
+        width: min(94%, 1000px);
+        margin: 50px auto;
+    }
+
+    .book-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 24px;
+    }
+
+    .book-table th,
+    .book-table td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+
+    .empty-message {
+        margin-top: 30px;
+        padding: 24px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        text-align: center;
+    }
+
+    .pagination {
+        margin-top: 24px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .pagination a {
+        text-decoration: none;
+        padding: 8px 14px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        color: #333;
+    }
+
+    .pagination a:hover {
+        background-color: #f2f2f2;
+    }
+
+    .pagination span {
+        padding: 8px 12px;
+    }
+</style>
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-container">
+
+    <h1>本一覧</h1>
+
+    {% if books_page_obj %}
+
+        <table class="book-table">
+
+            <thead>
+                <tr>
+                    <th>タイトル</th>
+                    <th>著者</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for book_page_obj in books_page_obj %}
+
+                    <tr>
+                        <td>{{ book_page_obj.book_title }}</td>
+                        <td>{{ book_page_obj.author }}</td>
+                    </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+
+        <!-- ページネーション -->
+        <div class="pagination">
+
+            <!-- 前のページが存在する場合 -->
+            {% if books_page_obj.has_previous %}
+
+                <!-- 1ページ目 -->
+                <a href="?page=1">
+                    « 最初
+                </a>
+
+                <!-- 1つ前のページ -->
+                <a href="?page={{ books_page_obj.previous_page_number }}">
+                    前へ
+                </a>
+
+            {% endif %}
+
+
+            <!-- 現在ページ / 総ページ数 -->
+            <span>
+                ページ
+                {{ books_page_obj.number }}
+                /
+                {{ books_page_obj.paginator.num_pages }}
+            </span>
+
+
+            <!-- 次のページが存在する場合 -->
+            {% if books_page_obj.has_next %}
+
+                <!-- 1つ次のページ -->
+                <a href="?page={{ books_page_obj.next_page_number }}">
+                    次へ
+                </a>
+
+                <!-- 最終ページ -->
+                <a href="?page={{ books_page_obj.paginator.num_pages }}">
+                    最後 »
+                </a>
+
+            {% endif %}
+
+        </div>
+
+
+    {% else %}
+
+        <div class="empty-message">
+            データが登録されてません
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

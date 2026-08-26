@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm,AuthenticationForm
 from django.contrib.auth.models import User
 import re
-
+from .models import BookList
 class LoginForm(AuthenticationForm):
     
     username = forms.CharField(
@@ -28,16 +28,6 @@ class LoginForm(AuthenticationForm):
 class UserRegisterForm(UserCreationForm):
     use_required_attribute = True
     
-    username = forms.CharField(
-        required=True,
-        label="ユーザー名",
-        error_messages={
-            "required":"必須入力です"
-        },
-        widget=forms.TelInput(
-            attrs={"class":"username_input","placeholder":"ユーザー名"}
-        )
-    )
     username = forms.CharField(
         required=True,
         label="ユーザー名",
@@ -81,7 +71,7 @@ class UserRegisterForm(UserCreationForm):
     
     def clean_email(self):
         
-        email = self.clean_data.get("email")
+        email = self.cleaned_data.get("email")
         pattern = r"^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$"
         
         if not re.match(pattern,email):
@@ -93,7 +83,7 @@ class UserRegisterForm(UserCreationForm):
         
         clean_data = super().clean()
         
-        password1 = self.clean_data.get("password1")
+        password1 = self.cleaned_data.get("password1")
         password2 = self.cleaned_data.get("password2")
         
         if password1 != password2:
@@ -102,6 +92,6 @@ class UserRegisterForm(UserCreationForm):
         return self.cleaned_data
             
     class Meta:
-        models = User
+        model = User
         fields = ["username","email","password1","password2"]
                 

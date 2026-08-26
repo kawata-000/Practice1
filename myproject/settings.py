@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+LOGIN = "/login/"
+LOGOUT = "/login/"
+
 
 # Application definition
 
